@@ -1,0 +1,42 @@
+name: load-data
+on:
+  workflow_dispatch: {}
+  # push:
+  #   branches: [ "main" ]
+  # pull_request:
+  #   branches: [ "main" ]
+
+jobs:
+  load:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install GDAL + psql
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gdal-bin postgresql-client
+
+      - name: Test DB connection
+        env:
+            DB_HOST: ${{ secrets.AIVEN_DB_HOST }} 
+            DB_NAME: ${{ secrets.AIVEN_DB_NAME }} 
+            DB_USER: ${{ secrets.AIVEN_DB_USER }} 
+            DB_PASSWORD: ${{ secrets.AIVEN_DB_PASSWORD }} 
+            DB_PORT: ${{ secrets.AIVEN_DB_PORT }}
+        run: |
+            PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c "select now();"
+      - name: Normalize script & syntax check
+        run: |
+          sudo apt-get install -y dos2unix
+          dos2unix 10_init_all_db_supabase.sh
+          bash -n 10_init_all_db_supabase.sh
+      - name: Run loader
+        env:
+            DB_HOST: ${{ secrets.AIVEN_DB_HOST }}
+            DB_NAME: ${{ secrets.AIVEN_DB_NAME }}
+            DB_USER: ${{ secrets.AIVEN_DB_USER }}
+            DB_PASSWORD: ${{ secrets.AIVEN_DB_PASSWORD }}
+            DB_PORT: ${{ secrets.AIVEN_DB_PORT }}
+            SRID: 3414
+            PGSSLMODE: require 
+        run: bash 10_init_all_db_supabase.sh 

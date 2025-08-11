@@ -1,0 +1,7 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "OBJECTID": 115, "NAME": "PASIR RIS PK", "X": 41227.028, "Y": 40073.740167700002 }, "geometry": { "type": "Point", "coordinates": [ 103.952173084193348, 1.378684204466107 ] } }
+]
+}
