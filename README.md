@@ -31,7 +31,7 @@ Parks4People helps users:
 **Select starting point and routing option**  
 ![Start Location](./frontend/public/screenshots/you-can-choose-starting-point.png)
 
-**Sheltered route example**  
+**Routing example (Will add example for sheltered route soon)**  
 ![Directions](./frontend/public/screenshots/directions.png)
 
 **Recommendations nearby a facility**  
